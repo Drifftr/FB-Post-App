@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Facebook Login</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h1>Thank you!</h1>
+        <div>
+            <?php
+            if (isset($_GET['token'])) {
+                //$token = 'CAAJkz3W4LEQBAOuDhFdeaqltSS1SFNWaOE0d9ugLZAjOW3iYihrmCHkmG8Lq6Dinuv5bazQppffXeZCLIDkBxIUVOjgzEnyFWNZBqAZAqPMQk1rwfsQPzFZBlFa3TiJaYEEmnGaqM8JJZC3NmETcx6SEqlPQ0OxsKKKKZCVFap9aYufspblJEhQw4sjyZCCkrCzhd8l2q7rxu9IXExoNuLcd';
+                $token = $_GET['token'];
+                $json = file_get_contents('https://graph.facebook.com/me?fields=statuses&access_token=' . $token);
+                $obj = json_decode($json);
+		echo '<h3>Status list</h3><br/>';
+		echo '<table style="width:100%">
+  <tr>
+    <td width="15%">ID</td>
+    <td width="15%">Name</td> 
+    <td width="20%">Time</td>
+	<td width="50%">Message</td>
+  </tr>';
+                foreach ($obj->statuses->data as $statuse) {
+					$status_id = $statuse->id;
+                    $name = $statuse->from->name;
+                    $message = $statuse->message;
+		    $time = $statuse->updated_time;
+					
+					echo "<tr>";
+                    echo "<td>".$status_id . "</td>";
+                    echo "<td >".$name . "</td>";
+					echo "<td>".$time . "</td>";
+                    echo "<td>".$message . "</td></tr>";
+
+
+                }
+				 echo '</table>';
+
+            }
+            ?>
+        </div>
+    </body>
+</html>
